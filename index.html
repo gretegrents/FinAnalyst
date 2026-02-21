@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Planning & Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Financial Planning & Analysis</h1>
+        
+        <button class="helper-toggle" id="helperToggle">
+            <span id="helperToggleIcon">📊</span> Data Helper
+        </button>
+        
+        <div class="helper-sidebar" id="helperSidebar">
+            <div class="helper-header">
+                <h3>Data Helper</h3>
+                <button class="helper-close" id="helperClose">×</button>
+            </div>
+            
+            <div class="helper-content">
+                <div class="helper-section">
+                    <h4>📈 Financial Data Sources</h4>
+                    <div class="data-sources">
+                        <a href="https://finance.yahoo.com" target="_blank" class="data-source-link">
+                            <span class="link-icon">🔗</span>
+                            <div>
+                                <strong>Yahoo Finance</strong>
+                                <small>Stock quotes, financials, news</small>
+                            </div>
+                        </a>
+                        <a href="https://www.sec.gov/edgar/searchedgar/companysearch.html" target="_blank" class="data-source-link">
+                            <span class="link-icon">🔗</span>
+                            <div>
+                                <strong>SEC EDGAR</strong>
+                                <small>Official company filings (US)</small>
+                            </div>
+                        </a>
+                        <a href="https://www.investing.com" target="_blank" class="data-source-link">
+                            <span class="link-icon">🔗</span>
+                            <div>
+                                <strong>Investing.com</strong>
+                                <small>Global financial data</small>
+                            </div>
+                        </a>
+                        <a href="https://www.marketwatch.com" target="_blank" class="data-source-link">
+                            <span class="link-icon">🔗</span>
+                            <div>
+                                <strong>MarketWatch</strong>
+                                <small>Market data & analysis</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="helper-section">
+                    <h4>📝 Quick Notes</h4>
+                    <textarea 
+                        id="helperNotepad" 
+                        class="helper-notepad" 
+                        placeholder="Paste or type financial data here temporarily...&#10;&#10;Example:&#10;Revenue: $1,000,000&#10;COGS: $600,000&#10;Net Profit: $80,000"
+                    ></textarea>
+                    <div class="notepad-actions">
+                        <button class="notepad-btn" id="clearNotepad">Clear</button>
+                        <button class="notepad-btn" id="copyNotepad">Copy</button>
+                    </div>
+                </div>
+                
+                <div class="helper-section">
+                    <h4>💡 Tips</h4>
+                    <ul class="helper-tips">
+                        <li>Search for company ticker symbol on Yahoo Finance</li>
+                        <li>Look for "Financials" or "Income Statement" tabs</li>
+                        <li>Annual reports contain detailed financial data</li>
+                        <li>Use the notepad to organize data before entering</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="income-statement">Income Statement</button>
+            <button class="tab-btn" data-tab="balance-sheet">Balance Sheet</button>
+            <button class="tab-btn" data-tab="cash-flow">Cash Flow</button>
+            <button class="tab-btn" data-tab="profitability-ratios">Profitability Ratios</button>
+            <button class="tab-btn" data-tab="planning">Planning</button>
+            <button class="tab-btn" data-tab="forecasting">Forecasting</button>
+        </div>
+        
+        <div class="tab-content active" id="income-statement">
+        <div class="input-section">
+            <h2>Income Statement</h2>
+            
+            <div class="company-info-section">
+                <div class="company-details">
+                    <div class="input-group-simple">
+                        <label for="companyName">Company Name</label>
+                        <input type="text" id="companyName" placeholder="Enter company name">
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="orgNumber">Organization Number</label>
+                        <input type="text" id="orgNumber" placeholder="Enter organization number">
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="currency">Currency</label>
+                        <select id="currency">
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="JPY">JPY (¥)</option>
+                            <option value="CNY">CNY (¥)</option>
+                            <option value="INR">INR (₹)</option>
+                            <option value="AUD">AUD ($)</option>
+                            <option value="CAD">CAD ($)</option>
+                            <option value="CHF">CHF (Fr)</option>
+                            <option value="SEK">SEK (kr)</option>
+                            <option value="NOK">NOK (kr)</option>
+                            <option value="DKK">DKK (kr)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="logo-upload-section">
+                    <label for="logoUpload">Company Logo</label>
+                    <div class="logo-preview" id="logoPreview">
+                        <span>No logo</span>
+                    </div>
+                    <input type="file" id="logoUpload" accept="image/*" style="display: none;">
+                    <button type="button" class="upload-btn" onclick="document.getElementById('logoUpload').click()">Upload Logo</button>
+                </div>
+            </div>
+            
+            <div class="column-headers">
+                <div>Metric</div>
+                <div>Current Year</div>
+                <div>Previous Year</div>
+                <div>Change</div>
+            </div>
+            
+            <div class="input-group">
+                <label for="revenue">Revenue (<span id="currencySymbol1">$</span>)</label>
+                <input type="number" id="revenue" placeholder="e.g., 1000000" step="0.01">
+                <input type="number" id="revenuePrev" placeholder="e.g., 1000000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="revenueChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="cogs">COGS (<span id="currencySymbol2">$</span>)</label>
+                <input type="number" id="cogs" placeholder="e.g., 600000" step="0.01">
+                <input type="number" id="cogsPrev" placeholder="e.g., 600000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="cogsChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>Gross Profit (<span id="currencySymbol3">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="grossProfitInput">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="grossProfitInputPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="grossProfitChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>Gross Profit Margin</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="grossProfitMarginInput">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="grossProfitMarginInputPrev">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="grossProfitMarginChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="personnelCosts">Personnel Costs (<span id="currencySymbol7">$</span>)</label>
+                <input type="number" id="personnelCosts" placeholder="e.g., 200000" step="0.01">
+                <input type="number" id="personnelCostsPrev" placeholder="e.g., 200000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="personnelCostsChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="marketingCosts">Marketing Costs (<span id="currencySymbol8">$</span>)</label>
+                <input type="number" id="marketingCosts" placeholder="e.g., 50000" step="0.01">
+                <input type="number" id="marketingCostsPrev" placeholder="e.g., 50000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="marketingCostsChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="otherOpex">Other OPEX (<span id="currencySymbol9">$</span>)</label>
+                <input type="number" id="otherOpex" placeholder="e.g., 30000" step="0.01">
+                <input type="number" id="otherOpexPrev" placeholder="e.g., 30000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="otherOpexChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="allocatedCosts">Allocated Costs (<span id="currencySymbol10">$</span>)</label>
+                <input type="number" id="allocatedCosts" placeholder="e.g., 20000" step="0.01">
+                <input type="number" id="allocatedCostsPrev" placeholder="e.g., 20000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="allocatedCostsChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>EBITDA (<span id="currencySymbol11">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="ebitdaInput">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="ebitdaInputPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="ebitdaChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="depreciation">Depreciation/Amortization (<span id="currencySymbol12">$</span>)</label>
+                <input type="number" id="depreciation" placeholder="e.g., 10000" step="0.01">
+                <input type="number" id="depreciationPrev" placeholder="e.g., 10000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="depreciationChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>EBIT (<span id="currencySymbol13">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="ebitInput">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="ebitInputPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="ebitChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="taxes">Taxes (<span id="currencySymbol14">$</span>)</label>
+                <input type="number" id="taxes" placeholder="e.g., 15000" step="0.01">
+                <input type="number" id="taxesPrev" placeholder="e.g., 15000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="taxesChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="interests">Interests (<span id="currencySymbol15">$</span>)</label>
+                <input type="number" id="interests" placeholder="e.g., 5000" step="0.01">
+                <input type="number" id="interestsPrev" placeholder="e.g., 5000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="interestsChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>Net Profit (<span id="currencySymbol16">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netProfitInput">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netProfitInputPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netProfitChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>Net Profit Margin</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netProfitMarginInput">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netProfitMarginInputPrev">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netProfitMarginChange">-</div>
+                </div>
+            </div>
+            
+            <button id="exportPdfBtn" class="export-btn">Export as PDF</button>
+            <button id="exportExcelBtn" class="export-btn excel-btn">Export to Excel</button>
+        </div>
+        
+        <div class="metrics-section">
+            <h2>Key Metrics</h2>
+            
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="metric-label">Sales Growth</div>
+                    <div class="metric-value" id="salesGrowth">0.00%</div>
+                </div>
+                
+                <div class="metric-box">
+                    <div class="metric-label">Gross Profit Margin</div>
+                    <div class="metric-value" id="grossProfitMarginMetric">0.00%</div>
+                </div>
+                
+                <div class="metric-box">
+                    <div class="metric-label">Net Profit Margin</div>
+                    <div class="metric-value" id="netProfitMarginMetric">0.00%</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <h2>Graphs</h2>
+            
+            <div class="graphs-container">
+                <div class="graph-panel">
+                    <div class="graph-controls">
+                        <label for="metricSelect1">Select Metric:</label>
+                        <select id="metricSelect1">
+                            <option value="revenue">Revenue</option>
+                            <option value="cogs">COGS</option>
+                            <option value="grossProfit" selected>Gross Profit</option>
+                            <option value="grossProfitMargin">Gross Profit Margin</option>
+                            <option value="personnelCosts">Personnel Costs</option>
+                            <option value="marketingCosts">Marketing Costs</option>
+                            <option value="otherOpex">Other OPEX</option>
+                            <option value="allocatedCosts">Allocated Costs</option>
+                            <option value="ebitda">EBITDA</option>
+                            <option value="depreciation">Depreciation/Amortization</option>
+                            <option value="ebit">EBIT</option>
+                            <option value="taxes">Taxes</option>
+                            <option value="interests">Interests</option>
+                            <option value="netProfit">Net Profit</option>
+                            <option value="netProfitMargin">Net Profit Margin</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="comparisonChart1"></canvas>
+                    </div>
+                </div>
+                
+                <div class="graph-panel">
+                    <div class="graph-controls">
+                        <label for="metricSelect2">Select Metric:</label>
+                        <select id="metricSelect2">
+                            <option value="revenue">Revenue</option>
+                            <option value="cogs">COGS</option>
+                            <option value="grossProfit">Gross Profit</option>
+                            <option value="grossProfitMargin">Gross Profit Margin</option>
+                            <option value="personnelCosts">Personnel Costs</option>
+                            <option value="marketingCosts">Marketing Costs</option>
+                            <option value="otherOpex">Other OPEX</option>
+                            <option value="allocatedCosts">Allocated Costs</option>
+                            <option value="ebitda">EBITDA</option>
+                            <option value="depreciation">Depreciation/Amortization</option>
+                            <option value="ebit">EBIT</option>
+                            <option value="taxes">Taxes</option>
+                            <option value="interests">Interests</option>
+                            <option value="netProfit" selected>Net Profit</option>
+                            <option value="netProfitMargin">Net Profit Margin</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="comparisonChart2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-content" id="balance-sheet">
+        <div class="input-section">
+            <h2>Balance Sheet</h2>
+            
+            <div class="company-info-section">
+                <div class="company-details">
+                    <div class="input-group-simple">
+                        <label for="companyNameBS">Company Name</label>
+                        <input type="text" id="companyNameBS" placeholder="Enter company name" readonly>
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="orgNumberBS">Organization Number</label>
+                        <input type="text" id="orgNumberBS" placeholder="Enter organization number" readonly>
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="currencyBS">Currency</label>
+                        <select id="currencyBS">
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="JPY">JPY (¥)</option>
+                            <option value="CNY">CNY (¥)</option>
+                            <option value="INR">INR (₹)</option>
+                            <option value="AUD">AUD ($)</option>
+                            <option value="CAD">CAD ($)</option>
+                            <option value="CHF">CHF (Fr)</option>
+                            <option value="SEK">SEK (kr)</option>
+                            <option value="NOK">NOK (kr)</option>
+                            <option value="DKK">DKK (kr)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="logo-upload-section">
+                    <div class="logo-preview" id="logoPreviewBS">
+                        <span>No logo</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column-headers">
+                <div>Metric</div>
+                <div>Current Year</div>
+                <div>Previous Year</div>
+                <div>Change</div>
+            </div>
+            
+            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Assets</h3>
+            
+            <div class="input-group">
+                <label for="currentAssets">Current Assets (<span class="currencySymbolBS">$</span>)</label>
+                <input type="number" id="currentAssets" placeholder="e.g., 500000" step="0.01">
+                <input type="number" id="currentAssetsPrev" placeholder="e.g., 500000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="currentAssetsChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="fixedAssets">Fixed Assets (<span class="currencySymbolBS">$</span>)</label>
+                <input type="number" id="fixedAssets" placeholder="e.g., 1500000" step="0.01">
+                <input type="number" id="fixedAssetsPrev" placeholder="e.g., 1500000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="fixedAssetsChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>Total Assets (<span class="currencySymbolBS">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="totalAssetsBS">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="totalAssetsBSPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="totalAssetsChange">-</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Liabilities</h3>
+            
+            <div class="input-group">
+                <label for="currentLiabilities">Current Liabilities (<span class="currencySymbolBS">$</span>)</label>
+                <input type="number" id="currentLiabilities" placeholder="e.g., 300000" step="0.01">
+                <input type="number" id="currentLiabilitiesPrev" placeholder="e.g., 300000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="currentLiabilitiesChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="longTermLiabilities">Long-term Liabilities (<span class="currencySymbolBS">$</span>)</label>
+                <input type="number" id="longTermLiabilities" placeholder="e.g., 700000" step="0.01">
+                <input type="number" id="longTermLiabilitiesPrev" placeholder="e.g., 700000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="longTermLiabilitiesChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>Total Liabilities (<span class="currencySymbolBS">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="totalLiabilitiesBS">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="totalLiabilitiesBSPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="totalLiabilitiesChange">-</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Equity</h3>
+            
+            <div class="input-group calculated-row">
+                <label>Total Equity (<span class="currencySymbolBS">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="totalEquityBS">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="totalEquityBSPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="totalEquityChange">-</div>
+                </div>
+            </div>
+            
+            <button id="exportPdfBtnBS" class="export-btn">Export as PDF</button>
+            <button id="exportExcelBtnBS" class="export-btn excel-btn">Export to Excel</button>
+        </div>
+        
+        <div class="results-section">
+            <h2>Graphs</h2>
+            
+            <div class="graphs-container">
+                <div class="graph-panel">
+                    <div class="graph-controls">
+                        <label for="metricSelectBS1">Select Metric:</label>
+                        <select id="metricSelectBS1">
+                            <option value="currentAssets">Current Assets</option>
+                            <option value="fixedAssets">Fixed Assets</option>
+                            <option value="totalAssets" selected>Total Assets</option>
+                            <option value="currentLiabilities">Current Liabilities</option>
+                            <option value="longTermLiabilities">Long-term Liabilities</option>
+                            <option value="totalLiabilities">Total Liabilities</option>
+                            <option value="totalEquity">Total Equity</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="comparisonChartBS1"></canvas>
+                    </div>
+                </div>
+                
+                <div class="graph-panel">
+                    <div class="graph-controls">
+                        <label for="metricSelectBS2">Select Metric:</label>
+                        <select id="metricSelectBS2">
+                            <option value="currentAssets">Current Assets</option>
+                            <option value="fixedAssets">Fixed Assets</option>
+                            <option value="totalAssets">Total Assets</option>
+                            <option value="currentLiabilities">Current Liabilities</option>
+                            <option value="longTermLiabilities">Long-term Liabilities</option>
+                            <option value="totalLiabilities">Total Liabilities</option>
+                            <option value="totalEquity" selected>Total Equity</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="comparisonChartBS2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-content" id="cash-flow">
+        <div class="input-section">
+            <h2>Cash Flow Statement</h2>
+            
+            <div class="company-info-section">
+                <div class="company-details">
+                    <div class="input-group-simple">
+                        <label for="companyNameCF">Company Name</label>
+                        <input type="text" id="companyNameCF" placeholder="Enter company name" readonly>
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="orgNumberCF">Organization Number</label>
+                        <input type="text" id="orgNumberCF" placeholder="Enter organization number" readonly>
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="currencyCF">Currency</label>
+                        <select id="currencyCF">
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="JPY">JPY (¥)</option>
+                            <option value="CNY">CNY (¥)</option>
+                            <option value="INR">INR (₹)</option>
+                            <option value="AUD">AUD ($)</option>
+                            <option value="CAD">CAD ($)</option>
+                            <option value="CHF">CHF (Fr)</option>
+                            <option value="SEK">SEK (kr)</option>
+                            <option value="NOK">NOK (kr)</option>
+                            <option value="DKK">DKK (kr)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="logo-upload-section">
+                    <div class="logo-preview" id="logoPreviewCF">
+                        <span>No logo</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column-headers">
+                <div>Metric</div>
+                <div>Current Year</div>
+                <div>Previous Year</div>
+                <div>Change</div>
+            </div>
+            
+            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Operating Activities</h3>
+            
+            <div class="input-group calculated-row">
+                <label>Net Profit (<span class="currencySymbolCF">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netProfitCF">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netProfitCFPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netProfitCFChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="depreciationCF">Depreciation & Amortization (<span class="currencySymbolCF">$</span>)</label>
+                <input type="number" id="depreciationCF" placeholder="e.g., 10000" step="0.01">
+                <input type="number" id="depreciationCFPrev" placeholder="e.g., 10000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="depreciationCFChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="workingCapitalChanges">Changes in Working Capital (<span class="currencySymbolCF">$</span>)</label>
+                <input type="number" id="workingCapitalChanges" placeholder="e.g., -5000" step="0.01">
+                <input type="number" id="workingCapitalChangesPrev" placeholder="e.g., -5000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="workingCapitalChangesChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="otherOperatingCF">Other Operating Activities (<span class="currencySymbolCF">$</span>)</label>
+                <input type="number" id="otherOperatingCF" placeholder="e.g., 2000" step="0.01">
+                <input type="number" id="otherOperatingCFPrev" placeholder="e.g., 2000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="otherOperatingCFChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>Net Cash from Operating Activities (<span class="currencySymbolCF">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netOperatingCF">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netOperatingCFPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netOperatingCFChange">-</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Investing Activities</h3>
+            
+            <div class="input-group">
+                <label for="capexCF">Capital Expenditures (<span class="currencySymbolCF">$</span>)</label>
+                <input type="number" id="capexCF" placeholder="e.g., -15000" step="0.01">
+                <input type="number" id="capexCFPrev" placeholder="e.g., -15000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="capexCFChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="investmentsCF">Investments & Acquisitions (<span class="currencySymbolCF">$</span>)</label>
+                <input type="number" id="investmentsCF" placeholder="e.g., -10000" step="0.01">
+                <input type="number" id="investmentsCFPrev" placeholder="e.g., -10000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="investmentsCFChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="otherInvestingCF">Other Investing Activities (<span class="currencySymbolCF">$</span>)</label>
+                <input type="number" id="otherInvestingCF" placeholder="e.g., 1000" step="0.01">
+                <input type="number" id="otherInvestingCFPrev" placeholder="e.g., 1000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="otherInvestingCFChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>Net Cash from Investing Activities (<span class="currencySymbolCF">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netInvestingCF">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netInvestingCFPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netInvestingCFChange">-</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Financing Activities</h3>
+            
+            <div class="input-group">
+                <label for="debtCF">Debt Issued/Repaid (<span class="currencySymbolCF">$</span>)</label>
+                <input type="number" id="debtCF" placeholder="e.g., 20000" step="0.01">
+                <input type="number" id="debtCFPrev" placeholder="e.g., 20000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="debtCFChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="equityCF">Equity Issued/Repurchased (<span class="currencySymbolCF">$</span>)</label>
+                <input type="number" id="equityCF" placeholder="e.g., 10000" step="0.01">
+                <input type="number" id="equityCFPrev" placeholder="e.g., 10000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="equityCFChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="dividendsCF">Dividends Paid (<span class="currencySymbolCF">$</span>)</label>
+                <input type="number" id="dividendsCF" placeholder="e.g., -5000" step="0.01">
+                <input type="number" id="dividendsCFPrev" placeholder="e.g., -5000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="dividendsCFChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="otherFinancingCF">Other Financing Activities (<span class="currencySymbolCF">$</span>)</label>
+                <input type="number" id="otherFinancingCF" placeholder="e.g., 1000" step="0.01">
+                <input type="number" id="otherFinancingCFPrev" placeholder="e.g., 1000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="otherFinancingCFChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>Net Cash from Financing Activities (<span class="currencySymbolCF">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netFinancingCF">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netFinancingCFPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netFinancingCFChange">-</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Summary</h3>
+            
+            <div class="input-group calculated-row">
+                <label>Net Change in Cash (<span class="currencySymbolCF">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netChangeCash">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netChangeCashPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netChangeCashChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="beginningCash">Beginning Cash Balance (<span class="currencySymbolCF">$</span>)</label>
+                <input type="number" id="beginningCash" placeholder="e.g., 50000" step="0.01">
+                <input type="number" id="beginningCashPrev" placeholder="e.g., 50000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="beginningCashChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>Ending Cash Balance (<span class="currencySymbolCF">$</span>)</label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="endingCash">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="endingCashPrev">$0</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="endingCashChange">-</div>
+                </div>
+            </div>
+            
+            <button id="exportPdfBtnCF" class="export-btn">Export as PDF</button>
+            <button id="exportExcelBtnCF" class="export-btn excel-btn">Export to Excel</button>
+        </div>
+        
+        <div class="results-section">
+            <h2>Graphs</h2>
+            
+            <div class="graphs-container">
+                <div class="graph-panel">
+                    <div class="graph-controls">
+                        <label for="metricSelectCF1">Select Metric:</label>
+                        <select id="metricSelectCF1">
+                            <option value="netOperatingCF" selected>Net Operating Cash Flow</option>
+                            <option value="netInvestingCF">Net Investing Cash Flow</option>
+                            <option value="netFinancingCF">Net Financing Cash Flow</option>
+                            <option value="netChangeCash">Net Change in Cash</option>
+                            <option value="endingCash">Ending Cash Balance</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="comparisonChartCF1"></canvas>
+                    </div>
+                </div>
+                
+                <div class="graph-panel">
+                    <div class="graph-controls">
+                        <label for="metricSelectCF2">Select Metric:</label>
+                        <select id="metricSelectCF2">
+                            <option value="netOperatingCF">Net Operating Cash Flow</option>
+                            <option value="netInvestingCF">Net Investing Cash Flow</option>
+                            <option value="netFinancingCF">Net Financing Cash Flow</option>
+                            <option value="netChangeCash" selected>Net Change in Cash</option>
+                            <option value="endingCash">Ending Cash Balance</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="comparisonChartCF2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-content" id="profitability-ratios">
+        <div class="input-section">
+            <h2>Profitability Ratios</h2>
+            
+            <div class="company-info-section">
+                <div class="company-details">
+                    <div class="input-group-simple">
+                        <label for="companyNamePR">Company Name</label>
+                        <input type="text" id="companyNamePR" placeholder="Enter company name" readonly>
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="orgNumberPR">Organization Number</label>
+                        <input type="text" id="orgNumberPR" placeholder="Enter organization number" readonly>
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="currencyPR">Currency</label>
+                        <select id="currencyPR">
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="JPY">JPY (¥)</option>
+                            <option value="CNY">CNY (¥)</option>
+                            <option value="INR">INR (₹)</option>
+                            <option value="AUD">AUD ($)</option>
+                            <option value="CAD">CAD ($)</option>
+                            <option value="CHF">CHF (Fr)</option>
+                            <option value="SEK">SEK (kr)</option>
+                            <option value="NOK">NOK (kr)</option>
+                            <option value="DKK">DKK (kr)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="logo-upload-section">
+                    <div class="logo-preview" id="logoPreviewPR">
+                        <span>No logo</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column-headers">
+                <div>Metric</div>
+                <div>Current Year</div>
+                <div>Previous Year</div>
+                <div>Change</div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>
+                    Gross Margin
+                    <span class="info-icon" title="Formula: (Gross Profit / Revenue) × 100">ℹ️</span>
+                </label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="grossMarginPR">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="grossMarginPRPrev">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="grossMarginPRChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>
+                    Operating Margin
+                    <span class="info-icon" title="Formula: (EBIT / Revenue) × 100">ℹ️</span>
+                </label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="operatingMarginPR">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="operatingMarginPRPrev">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="operatingMarginPRChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>
+                    Pretax Margin
+                    <span class="info-icon" title="Formula: ((EBIT - Interests) / Revenue) × 100">ℹ️</span>
+                </label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="pretaxMarginPR">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="pretaxMarginPRPrev">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="pretaxMarginPRChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>
+                    Net Profit Margin
+                    <span class="info-icon" title="Formula: (Net Profit / Revenue) × 100">ℹ️</span>
+                </label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netProfitMarginPR">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netProfitMarginPRPrev">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="netProfitMarginPRChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="cashFlowPR">
+                    Operating Cash Flow (<span class="currencySymbolPR">$</span>)
+                    <span class="info-icon" title="Enter your operating cash flow from cash flow statement">ℹ️</span>
+                </label>
+                <input type="number" id="cashFlowPR" placeholder="e.g., 150000" step="0.01">
+                <input type="number" id="cashFlowPRPrev" placeholder="e.g., 150000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="cashFlowPRChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>
+                    Cash Flow Margin
+                    <span class="info-icon" title="Formula: (Operating Cash Flow / Revenue) × 100">ℹ️</span>
+                </label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="cashFlowMarginPR">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="cashFlowMarginPRPrev">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="cashFlowMarginPRChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>
+                    Return on Assets (ROA)
+                    <span class="info-icon" title="Formula: (Net Profit / Total Assets) × 100">ℹ️</span>
+                </label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="roaPR">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="roaPRPrev">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="roaPRChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>
+                    Return on Equity (ROE)
+                    <span class="info-icon" title="Formula: (Net Profit / Total Equity) × 100">ℹ️</span>
+                </label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="roePR">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="roePRPrev">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="roePRChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="investedCapitalPR">
+                    Invested Capital (<span class="currencySymbolPR">$</span>)
+                    <span class="info-icon" title="Enter total invested capital (equity + long-term debt)">ℹ️</span>
+                </label>
+                <input type="number" id="investedCapitalPR" placeholder="e.g., 1000000" step="0.01">
+                <input type="number" id="investedCapitalPRPrev" placeholder="e.g., 1000000" step="0.01">
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="investedCapitalPRChange">-</div>
+                </div>
+            </div>
+            
+            <div class="input-group calculated-row">
+                <label>
+                    Return on Invested Capital (ROIC)
+                    <span class="info-icon" title="Formula: (Net Profit / Invested Capital) × 100">ℹ️</span>
+                </label>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="roicPR">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="roicPRPrev">0.00%</div>
+                </div>
+                <div class="calculated-group-value">
+                    <div class="calculated-value" id="roicPRChange">-</div>
+                </div>
+            </div>
+            
+            <button id="exportPdfBtnPR" class="export-btn">Export as PDF</button>
+            <button id="exportExcelBtnPR" class="export-btn excel-btn">Export to Excel</button>
+        </div>
+        
+        <div class="results-section">
+            <h2>Graphs</h2>
+            
+            <div class="graphs-container">
+                <div class="graph-panel">
+                    <div class="graph-controls">
+                        <label for="metricSelectPR1">Select Metric:</label>
+                        <select id="metricSelectPR1">
+                            <option value="grossMargin" selected>Gross Margin</option>
+                            <option value="operatingMargin">Operating Margin</option>
+                            <option value="pretaxMargin">Pretax Margin</option>
+                            <option value="netProfitMargin">Net Profit Margin</option>
+                            <option value="cashFlowMargin">Cash Flow Margin</option>
+                            <option value="roa">Return on Assets (ROA)</option>
+                            <option value="roe">Return on Equity (ROE)</option>
+                            <option value="roic">Return on Invested Capital (ROIC)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="comparisonChartPR1"></canvas>
+                    </div>
+                </div>
+                
+                <div class="graph-panel">
+                    <div class="graph-controls">
+                        <label for="metricSelectPR2">Select Metric:</label>
+                        <select id="metricSelectPR2">
+                            <option value="grossMargin">Gross Margin</option>
+                            <option value="operatingMargin">Operating Margin</option>
+                            <option value="pretaxMargin">Pretax Margin</option>
+                            <option value="netProfitMargin">Net Profit Margin</option>
+                            <option value="cashFlowMargin">Cash Flow Margin</option>
+                            <option value="roa">Return on Assets (ROA)</option>
+                            <option value="roe" selected>Return on Equity (ROE)</option>
+                            <option value="roic">Return on Invested Capital (ROIC)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="comparisonChartPR2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-content" id="planning">
+        <div class="input-section">
+            <h2>5-Year Planning</h2>
+            
+            <div class="company-info-section">
+                <div class="company-details">
+                    <div class="input-group-simple">
+                        <label for="companyNamePlan">Company Name</label>
+                        <input type="text" id="companyNamePlan" placeholder="Enter company name" readonly>
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="orgNumberPlan">Organization Number</label>
+                        <input type="text" id="orgNumberPlan" placeholder="Enter organization number" readonly>
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="currencyPlan">Currency</label>
+                        <select id="currencyPlan">
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="JPY">JPY (¥)</option>
+                            <option value="CNY">CNY (¥)</option>
+                            <option value="INR">INR (₹)</option>
+                            <option value="AUD">AUD ($)</option>
+                            <option value="CAD">CAD ($)</option>
+                            <option value="CHF">CHF (Fr)</option>
+                            <option value="SEK">SEK (kr)</option>
+                            <option value="NOK">NOK (kr)</option>
+                            <option value="DKK">DKK (kr)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="logo-upload-section">
+                    <div class="logo-preview" id="logoPreviewPlan">
+                        <span>No logo</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="planning-table-container">
+                <table class="planning-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Year 1</th>
+                            <th>Year 2</th>
+                            <th>Year 3</th>
+                            <th>Year 4</th>
+                            <th>Year 5</th>
+                            <th>CAGR %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="metric-label">Revenues (<span class="currencySymbolPlan">$</span>)</td>
+                            <td><input type="number" class="planning-input year-start" id="revenueY1" data-metric="revenue" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-middle" id="revenueY2" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-middle" id="revenueY3" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-middle" id="revenueY4" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-end" id="revenueY5" data-metric="revenue" placeholder="0" step="0.01"></td>
+                            <td class="cagr-cell-container">
+                                <div class="cagr-display" id="revenueCAGR">0.00%</div>
+                                <span class="info-icon cagr-info" title="CAGR is auto-calculated when you enter Year 1 and Year 5. Formula: CAGR = ((Year 5 / Year 1)^(1/4) - 1) × 100. Years 2-4 are then projected.">ℹ️</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="metric-label">COGS (<span class="currencySymbolPlan">$</span>)</td>
+                            <td><input type="number" class="planning-input year-start" id="cogsY1" data-metric="cogs" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-middle" id="cogsY2" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-middle" id="cogsY3" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-middle" id="cogsY4" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-end" id="cogsY5" data-metric="cogs" placeholder="0" step="0.01"></td>
+                            <td class="cagr-cell-container">
+                                <div class="cagr-display" id="cogsCAGR">0.00%</div>
+                                <span class="info-icon cagr-info" title="CAGR is auto-calculated when you enter Year 1 and Year 5. Formula: CAGR = ((Year 5 / Year 1)^(1/4) - 1) × 100. Years 2-4 are then projected.">ℹ️</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="metric-label">OPEX (<span class="currencySymbolPlan">$</span>)</td>
+                            <td><input type="number" class="planning-input year-start" id="opexY1" data-metric="opex" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-middle" id="opexY2" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-middle" id="opexY3" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-middle" id="opexY4" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-end" id="opexY5" data-metric="opex" placeholder="0" step="0.01"></td>
+                            <td class="cagr-cell-container">
+                                <div class="cagr-display" id="opexCAGR">0.00%</div>
+                                <span class="info-icon cagr-info" title="CAGR is auto-calculated when you enter Year 1 and Year 5. Formula: CAGR = ((Year 5 / Year 1)^(1/4) - 1) × 100. Years 2-4 are then projected.">ℹ️</span>
+                            </td>
+                        </tr>
+                        <tr class="calculated-row">
+                            <td class="metric-label">EBITDA (<span class="currencySymbolPlan">$</span>)</td>
+                            <td class="calculated-cell" id="ebitdaY1">$0</td>
+                            <td class="calculated-cell" id="ebitdaY2">$0</td>
+                            <td class="calculated-cell" id="ebitdaY3">$0</td>
+                            <td class="calculated-cell" id="ebitdaY4">$0</td>
+                            <td class="calculated-cell" id="ebitdaY5">$0</td>
+                            <td class="cagr-cell">-</td>
+                        </tr>
+                        <tr>
+                            <td class="metric-label">CAPEX (<span class="currencySymbolPlan">$</span>)</td>
+                            <td><input type="number" class="planning-input year-start" id="capexY1" data-metric="capex" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-middle" id="capexY2" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-middle" id="capexY3" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-middle" id="capexY4" placeholder="0" step="0.01"></td>
+                            <td><input type="number" class="planning-input year-end" id="capexY5" data-metric="capex" placeholder="0" step="0.01"></td>
+                            <td class="cagr-cell-container">
+                                <div class="cagr-display" id="capexCAGR">0.00%</div>
+                                <span class="info-icon cagr-info" title="CAGR is auto-calculated when you enter Year 1 and Year 5. Formula: CAGR = ((Year 5 / Year 1)^(1/4) - 1) × 100. Years 2-4 are then projected.">ℹ️</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="metric-label">FTEs</td>
+                            <td><input type="number" class="planning-input year-start" id="ftesY1" data-metric="ftes" placeholder="0" step="0.1"></td>
+                            <td><input type="number" class="planning-input year-middle" id="ftesY2" placeholder="0" step="0.1"></td>
+                            <td><input type="number" class="planning-input year-middle" id="ftesY3" placeholder="0" step="0.1"></td>
+                            <td><input type="number" class="planning-input year-middle" id="ftesY4" placeholder="0" step="0.1"></td>
+                            <td><input type="number" class="planning-input year-end" id="ftesY5" data-metric="ftes" placeholder="0" step="0.1"></td>
+                            <td class="cagr-cell-container">
+                                <div class="cagr-display" id="ftesCAGR">0.00%</div>
+                                <span class="info-icon cagr-info" title="CAGR is auto-calculated when you enter Year 1 and Year 5. Formula: CAGR = ((Year 5 / Year 1)^(1/4) - 1) × 100. Years 2-4 are then projected.">ℹ️</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <button id="exportPdfBtnPlan" class="export-btn">Export as PDF</button>
+            <button id="exportExcelBtnPlan" class="export-btn excel-btn">Export to Excel</button>
+        </div>
+        
+        <div class="results-section">
+            <h2>5-Year Financial Overview</h2>
+            
+            <div class="single-chart-container">
+                <div class="chart-container-large">
+                    <canvas id="stackedAreaChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tab-content" id="forecasting">
+        <div class="input-section">
+            <h2>Monthly Forecasting</h2>
+            
+            <div class="company-info-section">
+                <div class="company-details">
+                    <div class="input-group-simple">
+                        <label for="companyNameForecast">Company Name</label>
+                        <input type="text" id="companyNameForecast" placeholder="Enter company name" readonly>
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="orgNumberForecast">Organization Number</label>
+                        <input type="text" id="orgNumberForecast" placeholder="Enter organization number" readonly>
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="currencyForecast">Currency</label>
+                        <select id="currencyForecast">
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="JPY">JPY (¥)</option>
+                            <option value="CNY">CNY (¥)</option>
+                            <option value="INR">INR (₹)</option>
+                            <option value="AUD">AUD ($)</option>
+                            <option value="CAD">CAD ($)</option>
+                            <option value="CHF">CHF (Fr)</option>
+                            <option value="SEK">SEK (kr)</option>
+                            <option value="NOK">NOK (kr)</option>
+                            <option value="DKK">DKK (kr)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group-simple">
+                        <label for="metricSelect">Metric</label>
+                        <select id="metricSelect">
+                            <option value="revenue">Revenue</option>
+                            <option value="cogs">COGS</option>
+                            <option value="opex">OPEX</option>
+                            <option value="ebitda">EBITDA</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="logo-upload-section">
+                    <div class="logo-preview" id="logoPreviewForecast">
+                        <span>No logo</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="forecast-controls">
+                <div class="input-group-simple">
+                    <label for="startBalance">Start Balance (<span class="currencySymbolForecast">$</span>)</label>
+                    <input type="number" id="startBalance" placeholder="e.g., 100000" step="0.01">
+                </div>
+                
+                <div class="input-group-simple">
+                    <label for="endBalance">End Balance (<span class="currencySymbolForecast">$</span>)</label>
+                    <input type="number" id="endBalance" placeholder="e.g., 120000" step="0.01">
+                </div>
+            </div>
+            
+            <div class="forecast-table-container">
+                <table class="forecast-table">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>Plan (<span class="currencySymbolForecast">$</span>)</th>
+                            <th>Actuals (<span class="currencySymbolForecast">$</span>)</th>
+                            <th>Variance (<span class="currencySymbolForecast">$</span>)</th>
+                            <th>Variance %</th>
+                        </tr>
+                    </thead>
+                    <tbody id="forecastTableBody">
+                        <!-- Rows will be generated by JavaScript -->
+                    </tbody>
+                    <tfoot>
+                        <tr class="total-row">
+                            <td>Total</td>
+                            <td id="totalPlan">$0</td>
+                            <td id="totalActuals">$0</td>
+                            <td id="totalVariance">$0</td>
+                            <td id="totalVariancePercent">0.00%</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            
+            <button id="exportPdfBtnForecast" class="export-btn">Export as PDF</button>
+            <button id="exportExcelBtnForecast" class="export-btn excel-btn">Export to Excel</button>
+        </div>
+        
+        <div class="results-section">
+            <h2>Plan vs Actuals</h2>
+            
+            <div class="single-chart-container">
+                <div class="chart-container-large">
+                    <canvas id="forecastComparisonChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
