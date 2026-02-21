@@ -1,1355 +1,1416 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Planning & Analysis</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Financial Planning & Analysis</h1>
-        
-        <button class="helper-toggle" id="helperToggle">
-            <span id="helperToggleIcon">📊</span> Data Helper
-        </button>
-        
-        <div class="helper-sidebar" id="helperSidebar">
-            <div class="helper-header">
-                <h3>Data Helper</h3>
-                <button class="helper-close" id="helperClose">×</button>
-            </div>
-            
-            <div class="helper-content">
-                <div class="helper-section">
-                    <h4>📈 Financial Data Sources</h4>
-                    <div class="data-sources">
-                        <a href="https://finance.yahoo.com" target="_blank" class="data-source-link">
-                            <span class="link-icon">🔗</span>
-                            <div>
-                                <strong>Yahoo Finance</strong>
-                                <small>Stock quotes, financials, news</small>
-                            </div>
-                        </a>
-                        <a href="https://www.sec.gov/edgar/searchedgar/companysearch.html" target="_blank" class="data-source-link">
-                            <span class="link-icon">🔗</span>
-                            <div>
-                                <strong>SEC EDGAR</strong>
-                                <small>Official company filings (US)</small>
-                            </div>
-                        </a>
-                        <a href="https://www.investing.com" target="_blank" class="data-source-link">
-                            <span class="link-icon">🔗</span>
-                            <div>
-                                <strong>Investing.com</strong>
-                                <small>Global financial data</small>
-                            </div>
-                        </a>
-                        <a href="https://www.marketwatch.com" target="_blank" class="data-source-link">
-                            <span class="link-icon">🔗</span>
-                            <div>
-                                <strong>MarketWatch</strong>
-                                <small>Market data & analysis</small>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="helper-section">
-                    <h4>📝 Quick Notes</h4>
-                    <textarea 
-                        id="helperNotepad" 
-                        class="helper-notepad" 
-                        placeholder="Paste or type financial data here temporarily...&#10;&#10;Example:&#10;Revenue: $1,000,000&#10;COGS: $600,000&#10;Net Profit: $80,000"
-                    ></textarea>
-                    <div class="notepad-actions">
-                        <button class="notepad-btn" id="clearNotepad">Clear</button>
-                        <button class="notepad-btn" id="copyNotepad">Copy</button>
-                    </div>
-                </div>
-                
-                <div class="helper-section">
-                    <h4>💡 Tips</h4>
-                    <ul class="helper-tips">
-                        <li>Search for company ticker symbol on Yahoo Finance</li>
-                        <li>Look for "Financials" or "Income Statement" tabs</li>
-                        <li>Annual reports contain detailed financial data</li>
-                        <li>Use the notepad to organize data before entering</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        
-        <div class="tab-navigation">
-            <button class="tab-btn active" data-tab="income-statement">Income Statement</button>
-            <button class="tab-btn" data-tab="balance-sheet">Balance Sheet</button>
-            <button class="tab-btn" data-tab="cash-flow">Cash Flow</button>
-            <button class="tab-btn" data-tab="profitability-ratios">Profitability Ratios</button>
-            <button class="tab-btn" data-tab="planning">Planning</button>
-            <button class="tab-btn" data-tab="forecasting">Forecasting</button>
-        </div>
-        
-        <div class="tab-content active" id="income-statement">
-        <div class="input-section">
-            <h2>Income Statement</h2>
-            
-            <div class="company-info-section">
-                <div class="company-details">
-                    <div class="input-group-simple">
-                        <label for="companyName">Company Name</label>
-                        <input type="text" id="companyName" placeholder="Enter company name">
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="orgNumber">Organization Number</label>
-                        <input type="text" id="orgNumber" placeholder="Enter organization number">
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="currency">Currency</label>
-                        <select id="currency">
-                            <option value="USD">USD ($)</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="GBP">GBP (£)</option>
-                            <option value="JPY">JPY (¥)</option>
-                            <option value="CNY">CNY (¥)</option>
-                            <option value="INR">INR (₹)</option>
-                            <option value="AUD">AUD ($)</option>
-                            <option value="CAD">CAD ($)</option>
-                            <option value="CHF">CHF (Fr)</option>
-                            <option value="SEK">SEK (kr)</option>
-                            <option value="NOK">NOK (kr)</option>
-                            <option value="DKK">DKK (kr)</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="logo-upload-section">
-                    <label for="logoUpload">Company Logo</label>
-                    <div class="logo-preview" id="logoPreview">
-                        <span>No logo</span>
-                    </div>
-                    <button type="button" class="remove-logo-btn" id="removeLogo" style="display: none;">✕ Remove Logo</button>
-                    <input type="file" id="logoUpload" accept="image/*" style="display: none;">
-                    <button type="button" class="upload-btn" onclick="document.getElementById('logoUpload').click()">Upload Logo</button>
-                </div>
-            </div>
-            
-            <div class="column-headers">
-                <div>Metric</div>
-                <div>Current Year</div>
-                <div>Previous Year</div>
-                <div>Change</div>
-            </div>
-            
-            <div class="input-group">
-                <label for="revenue">Revenue (<span id="currencySymbol1">$</span>)</label>
-                <input type="number" id="revenue" placeholder="e.g., 1000000" step="0.01">
-                <input type="number" id="revenuePrev" placeholder="e.g., 1000000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="revenueChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="cogs">COGS (<span id="currencySymbol2">$</span>)</label>
-                <input type="number" id="cogs" placeholder="e.g., 600000" step="0.01">
-                <input type="number" id="cogsPrev" placeholder="e.g., 600000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="cogsChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>Gross Profit (<span id="currencySymbol3">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="grossProfitInput">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="grossProfitInputPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="grossProfitChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>Gross Profit Margin</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="grossProfitMarginInput">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="grossProfitMarginInputPrev">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="grossProfitMarginChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="personnelCosts">Personnel Costs (<span id="currencySymbol7">$</span>)</label>
-                <input type="number" id="personnelCosts" placeholder="e.g., 200000" step="0.01">
-                <input type="number" id="personnelCostsPrev" placeholder="e.g., 200000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="personnelCostsChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="marketingCosts">Marketing Costs (<span id="currencySymbol8">$</span>)</label>
-                <input type="number" id="marketingCosts" placeholder="e.g., 50000" step="0.01">
-                <input type="number" id="marketingCostsPrev" placeholder="e.g., 50000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="marketingCostsChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="otherOpex">Other OPEX (<span id="currencySymbol9">$</span>)</label>
-                <input type="number" id="otherOpex" placeholder="e.g., 30000" step="0.01">
-                <input type="number" id="otherOpexPrev" placeholder="e.g., 30000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="otherOpexChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="allocatedCosts">Allocated Costs (<span id="currencySymbol10">$</span>)</label>
-                <input type="number" id="allocatedCosts" placeholder="e.g., 20000" step="0.01">
-                <input type="number" id="allocatedCostsPrev" placeholder="e.g., 20000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="allocatedCostsChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>EBITDA (<span id="currencySymbol11">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="ebitdaInput">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="ebitdaInputPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="ebitdaChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="depreciation">Depreciation/Amortization (<span id="currencySymbol12">$</span>)</label>
-                <input type="number" id="depreciation" placeholder="e.g., 10000" step="0.01">
-                <input type="number" id="depreciationPrev" placeholder="e.g., 10000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="depreciationChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>EBIT (<span id="currencySymbol13">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="ebitInput">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="ebitInputPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="ebitChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="taxes">Taxes (<span id="currencySymbol14">$</span>)</label>
-                <input type="number" id="taxes" placeholder="e.g., 15000" step="0.01">
-                <input type="number" id="taxesPrev" placeholder="e.g., 15000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="taxesChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="interests">Interests (<span id="currencySymbol15">$</span>)</label>
-                <input type="number" id="interests" placeholder="e.g., 5000" step="0.01">
-                <input type="number" id="interestsPrev" placeholder="e.g., 5000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="interestsChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>Net Profit (<span id="currencySymbol16">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netProfitInput">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netProfitInputPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netProfitChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>Net Profit Margin</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netProfitMarginInput">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netProfitMarginInputPrev">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netProfitMarginChange">-</div>
-                </div>
-            </div>
-            
-            <button id="exportPdfBtn" class="export-btn">Export as PDF</button>
-            <button id="exportExcelBtn" class="export-btn excel-btn">Export to Excel</button>
-        </div>
-        
-        <div class="metrics-section">
-            <h2>Key Metrics</h2>
-            
-            <div class="metrics-grid">
-                <div class="metric-box">
-                    <div class="metric-label">Sales Growth</div>
-                    <div class="metric-value" id="salesGrowth">0.00%</div>
-                </div>
-                
-                <div class="metric-box">
-                    <div class="metric-label">Gross Profit Margin</div>
-                    <div class="metric-value" id="grossProfitMarginMetric">0.00%</div>
-                </div>
-                
-                <div class="metric-box">
-                    <div class="metric-label">Net Profit Margin</div>
-                    <div class="metric-value" id="netProfitMarginMetric">0.00%</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="results-section">
-            <h2>Graphs</h2>
-            
-            <div class="graphs-container">
-                <div class="graph-panel">
-                    <div class="graph-controls">
-                        <label for="metricSelect1">Select Metric:</label>
-                        <select id="metricSelect1">
-                            <option value="revenue">Revenue</option>
-                            <option value="cogs">COGS</option>
-                            <option value="grossProfit" selected>Gross Profit</option>
-                            <option value="grossProfitMargin">Gross Profit Margin</option>
-                            <option value="personnelCosts">Personnel Costs</option>
-                            <option value="marketingCosts">Marketing Costs</option>
-                            <option value="otherOpex">Other OPEX</option>
-                            <option value="allocatedCosts">Allocated Costs</option>
-                            <option value="ebitda">EBITDA</option>
-                            <option value="depreciation">Depreciation/Amortization</option>
-                            <option value="ebit">EBIT</option>
-                            <option value="taxes">Taxes</option>
-                            <option value="interests">Interests</option>
-                            <option value="netProfit">Net Profit</option>
-                            <option value="netProfitMargin">Net Profit Margin</option>
-                        </select>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <canvas id="comparisonChart1"></canvas>
-                    </div>
-                </div>
-                
-                <div class="graph-panel">
-                    <div class="graph-controls">
-                        <label for="metricSelect2">Select Metric:</label>
-                        <select id="metricSelect2">
-                            <option value="revenue">Revenue</option>
-                            <option value="cogs">COGS</option>
-                            <option value="grossProfit">Gross Profit</option>
-                            <option value="grossProfitMargin">Gross Profit Margin</option>
-                            <option value="personnelCosts">Personnel Costs</option>
-                            <option value="marketingCosts">Marketing Costs</option>
-                            <option value="otherOpex">Other OPEX</option>
-                            <option value="allocatedCosts">Allocated Costs</option>
-                            <option value="ebitda">EBITDA</option>
-                            <option value="depreciation">Depreciation/Amortization</option>
-                            <option value="ebit">EBIT</option>
-                            <option value="taxes">Taxes</option>
-                            <option value="interests">Interests</option>
-                            <option value="netProfit" selected>Net Profit</option>
-                            <option value="netProfitMargin">Net Profit Margin</option>
-                        </select>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <canvas id="comparisonChart2"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.helper-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.helper-toggle:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+#helperToggleIcon {
+    font-size: 1.2rem;
+}
+
+.helper-sidebar {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 380px;
+    height: 100vh;
+    background: white;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.helper-sidebar.active {
+    right: 0;
+}
+
+.helper-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.helper-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.helper-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: background 0.2s;
+}
+
+.helper-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.helper-content {
+    padding: 20px;
+}
+
+.helper-section {
+    margin-bottom: 25px;
+}
+
+.helper-section h4 {
+    color: #667eea;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.data-sources {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.data-source-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.2s;
+}
+
+.data-source-link:hover {
+    border-color: #667eea;
+    background: #f0f4ff;
+    transform: translateX(5px);
+}
+
+.link-icon {
+    font-size: 1.5rem;
+}
+
+.data-source-link strong {
+    display: block;
+    color: #667eea;
+    font-size: 0.95rem;
+}
+
+.data-source-link small {
+    display: block;
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.helper-notepad {
+    width: 100%;
+    min-height: 200px;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    resize: vertical;
+    transition: border-color 0.3s;
+}
+
+.helper-notepad:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.notepad-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.notepad-btn {
+    flex: 1;
+    padding: 8px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.notepad-btn:hover {
+    background: #5568d3;
+}
+
+.helper-tips {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.helper-tips li {
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+    color: #555;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.helper-tips li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #667eea;
+    font-weight: bold;
+}
+
+.planning-table-container {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.planning-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.planning-table thead th {
+    background: white;
+    color: #667eea;
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: 2px solid #667eea;
+}
+
+.planning-table thead th:first-child {
+    text-align: left;
+    min-width: 180px;
+}
+
+.planning-table tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.planning-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.planning-table tbody tr.calculated-row {
+    background: #f0f4f8;
+}
+
+.planning-table tbody tr.calculated-row:hover {
+    background: #e8eef5;
+}
+
+.planning-table td {
+    padding: 10px;
+    text-align: center;
+}
+
+.planning-table td.metric-label {
+    text-align: left;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.planning-input {
+    width: 100%;
+    padding: 8px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 0.9rem;
+    transition: border-color 0.3s;
+}
+
+.planning-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.cagr-cell-container {
+    position: relative;
+    padding: 10px;
+}
+
+.cagr-display {
+    padding: 8px;
+    background: #fff9e6;
+    border: 2px solid #f59e0b;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #f59e0b;
+}
+
+.cagr-info {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    font-size: 0.85rem;
+    color: #f59e0b;
+}
+
+.cagr-cell {
+    text-align: center;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.calculated-cell {
+    font-weight: 600;
+    color: #667eea;
+    font-size: 0.95rem;
+}
+
+.forecast-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.forecast-controls .input-group-simple {
+    grid-template-columns: 150px 200px;
+}
+
+.forecast-table-container {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.forecast-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    table-layout: fixed;
+}
+
+.forecast-table thead th {
+    background: white;
+    color: #667eea;
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: 2px solid #667eea;
+}
+
+.forecast-table thead th:first-child {
+    text-align: left;
+    width: 12%;
+}
+
+.forecast-table thead th:nth-child(2),
+.forecast-table thead th:nth-child(3) {
+    width: 20%;
+}
+
+.forecast-table thead th:nth-child(4),
+.forecast-table thead th:nth-child(5) {
+    width: 24%;
+}
+
+.forecast-table tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.forecast-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.forecast-table td {
+    padding: 10px 12px;
+    text-align: center;
+}
+
+.forecast-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+    color: #555;
+}
+
+.forecast-table .plan-cell {
+    background: #f0f4f8;
+    font-weight: 600;
+    color: #667eea;
+}
+
+.forecast-table input.actuals-input {
+    width: 100%;
+    padding: 6px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.forecast-table input.actuals-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.forecast-table .variance-positive {
+    color: #38a169;
+    font-weight: 600;
+}
+
+.forecast-table .variance-negative {
+    color: #e53e3e;
+    font-weight: 600;
+}
+
+.forecast-table tfoot .total-row {
+    background: #667eea;
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.forecast-table tfoot .total-row td {
+    padding: 12px;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+}
+
+.tab-navigation {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: flex-start;
+}
+
+.tab-btn {
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.tab-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.tab-btn.active {
+    background: white;
+    color: #667eea;
+    border-color: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.input-section, .results-section {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.company-info-section {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.company-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.input-group-simple {
+    display: grid;
+    grid-template-columns: 200px 300px;
+    gap: 10px;
+    align-items: center;
+}
+
+.input-group-simple label {
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.logo-upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: -34px;
+}
+
+.logo-upload-section label {
+    font-size: 0.85rem;
+    color: #555;
+    font-weight: 600;
+}
+
+.logo-preview {
+    width: 120px;
+    height: 120px;
+    border: 2px dashed #d0d7de;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    overflow: hidden;
+}
+
+.logo-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.logo-preview span {
+    color: #999;
+    font-size: 0.85rem;
+}
+
+.upload-btn {
+    padding: 6px 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.upload-btn:hover {
+    background: #5568d3;
+}
+
+.remove-logo-btn {
+    padding: 6px 12px;
+    background: transparent;
+    color: #e53e3e;
+    border: 1px solid #e53e3e;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 5px;
+}
+
+.remove-logo-btn:hover {
+    background: #fee;
+    color: #c53030;
+    border-color: #c53030;
+}
+
+.input-group {
+    margin-bottom: 12px;
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1.5fr 1fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.input-group.calculated-row {
+    margin-bottom: 12px;
+}
+
+.input-group label {
+    text-align: left;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+}
+
+.column-headers {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1.5fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #667eea;
+}
+
+.column-headers div {
+    font-weight: 600;
+    color: #667eea;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.column-headers div:first-child {
+    text-align: left;
+}
+
+.calculated-group {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: #f0f4f8;
+    border-radius: 8px;
+    border: 2px solid #d0d7de;
+    display: grid;
+    grid-template-columns: 2fr 1.5fr;
+    gap: 10px;
+    align-items: center;
+}
+
+.calculated-group-value {
+    padding: 6px 8px;
+    background: #f0f4f8;
+    border-radius: 8px;
+    border: 2px solid #d0d7de;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calculated-group label {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.calculated-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+.calculated-value.positive {
+    color: #38a169;
+}
+
+.calculated-value.negative {
+    color: #e53e3e;
+}
+
+label {
+    display: block;
+    color: #555;
+    margin-bottom: 0;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.info-icon {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 0.85rem;
+    cursor: help;
+    color: #667eea;
+    transition: transform 0.2s;
+}
+
+.info-icon:hover {
+    transform: scale(1.2);
+}
+
+input[type="number"], input[type="text"], select {
+    width: 100%;
+    padding: 6px 8px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+    background: white;
+}
+
+input[type="text"][readonly] {
+    background: #f8f9fa;
+    color: #666;
+    cursor: not-allowed;
+}
+
+input[type="number"] {
+    text-align: center;
+}
+
+input[type="number"]:focus, input[type="text"]:focus, select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+select {
+    cursor: pointer;
+}
+
+#calculateBtn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 10px;
+}
+
+.export-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 10px;
+}
+
+.export-btn.excel-btn {
+    background: linear-gradient(135deg, #217346 0%, #185c37 100%);
+}
+
+#calculateBtn:hover, .export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+#calculateBtn:active, .export-btn:active {
+    transform: translateY(0);
+}
+
+.results-section {
+    display: block;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.graphs-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.graph-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.graph-controls {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.graph-controls label {
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.graph-controls select {
+    padding: 6px 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    background: white;
+    cursor: pointer;
+    flex: 1;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+.single-chart-container {
+    width: 100%;
+}
+
+.chart-container-large {
+    position: relative;
+    height: 450px;
+    width: 100%;
+}
+
+.metrics-section {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.metric-box {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.metric-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.metric-value {
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.results-section h2 {
+    grid-column: 1 / -1;
+}
+
+.results-section .column-headers {
+    grid-column: 1 / -1;
+    margin-bottom: 5px;
+}
+
+.metric-card {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.metric-card h3 {
+    color: #333;
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+    font-weight: 600;
+    min-height: 16px;
+}
+
+.metric-value {
+    color: #333;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+@media print {
+    @page {
+        margin: 0.5cm;
+        size: A4 landscape;
+    }
     
-    <div class="tab-content" id="balance-sheet">
-        <div class="input-section">
-            <h2>Balance Sheet</h2>
-            
-            <div class="company-info-section">
-                <div class="company-details">
-                    <div class="input-group-simple">
-                        <label for="companyNameBS">Company Name</label>
-                        <input type="text" id="companyNameBS" placeholder="Enter company name" readonly>
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="orgNumberBS">Organization Number</label>
-                        <input type="text" id="orgNumberBS" placeholder="Enter organization number" readonly>
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="currencyBS">Currency</label>
-                        <select id="currencyBS">
-                            <option value="USD">USD ($)</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="GBP">GBP (£)</option>
-                            <option value="JPY">JPY (¥)</option>
-                            <option value="CNY">CNY (¥)</option>
-                            <option value="INR">INR (₹)</option>
-                            <option value="AUD">AUD ($)</option>
-                            <option value="CAD">CAD ($)</option>
-                            <option value="CHF">CHF (Fr)</option>
-                            <option value="SEK">SEK (kr)</option>
-                            <option value="NOK">NOK (kr)</option>
-                            <option value="DKK">DKK (kr)</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="logo-upload-section">
-                    <div class="logo-preview" id="logoPreviewBS">
-                        <span>No logo</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="column-headers">
-                <div>Metric</div>
-                <div>Current Year</div>
-                <div>Previous Year</div>
-                <div>Change</div>
-            </div>
-            
-            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Assets</h3>
-            
-            <div class="input-group">
-                <label for="currentAssets">Current Assets (<span class="currencySymbolBS">$</span>)</label>
-                <input type="number" id="currentAssets" placeholder="e.g., 500000" step="0.01">
-                <input type="number" id="currentAssetsPrev" placeholder="e.g., 500000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="currentAssetsChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="fixedAssets">Fixed Assets (<span class="currencySymbolBS">$</span>)</label>
-                <input type="number" id="fixedAssets" placeholder="e.g., 1500000" step="0.01">
-                <input type="number" id="fixedAssetsPrev" placeholder="e.g., 1500000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="fixedAssetsChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>Total Assets (<span class="currencySymbolBS">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="totalAssetsBS">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="totalAssetsBSPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="totalAssetsChange">-</div>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Liabilities</h3>
-            
-            <div class="input-group">
-                <label for="currentLiabilities">Current Liabilities (<span class="currencySymbolBS">$</span>)</label>
-                <input type="number" id="currentLiabilities" placeholder="e.g., 300000" step="0.01">
-                <input type="number" id="currentLiabilitiesPrev" placeholder="e.g., 300000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="currentLiabilitiesChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="longTermLiabilities">Long-term Liabilities (<span class="currencySymbolBS">$</span>)</label>
-                <input type="number" id="longTermLiabilities" placeholder="e.g., 700000" step="0.01">
-                <input type="number" id="longTermLiabilitiesPrev" placeholder="e.g., 700000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="longTermLiabilitiesChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>Total Liabilities (<span class="currencySymbolBS">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="totalLiabilitiesBS">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="totalLiabilitiesBSPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="totalLiabilitiesChange">-</div>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Equity</h3>
-            
-            <div class="input-group calculated-row">
-                <label>Total Equity (<span class="currencySymbolBS">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="totalEquityBS">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="totalEquityBSPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="totalEquityChange">-</div>
-                </div>
-            </div>
-            
-            <button id="exportPdfBtnBS" class="export-btn">Export as PDF</button>
-            <button id="exportExcelBtnBS" class="export-btn excel-btn">Export to Excel</button>
-        </div>
-        
-        <div class="results-section">
-            <h2>Graphs</h2>
-            
-            <div class="graphs-container">
-                <div class="graph-panel">
-                    <div class="graph-controls">
-                        <label for="metricSelectBS1">Select Metric:</label>
-                        <select id="metricSelectBS1">
-                            <option value="currentAssets">Current Assets</option>
-                            <option value="fixedAssets">Fixed Assets</option>
-                            <option value="totalAssets" selected>Total Assets</option>
-                            <option value="currentLiabilities">Current Liabilities</option>
-                            <option value="longTermLiabilities">Long-term Liabilities</option>
-                            <option value="totalLiabilities">Total Liabilities</option>
-                            <option value="totalEquity">Total Equity</option>
-                        </select>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <canvas id="comparisonChartBS1"></canvas>
-                    </div>
-                </div>
-                
-                <div class="graph-panel">
-                    <div class="graph-controls">
-                        <label for="metricSelectBS2">Select Metric:</label>
-                        <select id="metricSelectBS2">
-                            <option value="currentAssets">Current Assets</option>
-                            <option value="fixedAssets">Fixed Assets</option>
-                            <option value="totalAssets">Total Assets</option>
-                            <option value="currentLiabilities">Current Liabilities</option>
-                            <option value="longTermLiabilities">Long-term Liabilities</option>
-                            <option value="totalLiabilities">Total Liabilities</option>
-                            <option value="totalEquity" selected>Total Equity</option>
-                        </select>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <canvas id="comparisonChartBS2"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    body {
+        background: white;
+        padding: 0;
+        margin: 0;
+    }
     
-    <div class="tab-content" id="cash-flow">
-        <div class="input-section">
-            <h2>Cash Flow Statement</h2>
-            
-            <div class="company-info-section">
-                <div class="company-details">
-                    <div class="input-group-simple">
-                        <label for="companyNameCF">Company Name</label>
-                        <input type="text" id="companyNameCF" placeholder="Enter company name" readonly>
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="orgNumberCF">Organization Number</label>
-                        <input type="text" id="orgNumberCF" placeholder="Enter organization number" readonly>
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="currencyCF">Currency</label>
-                        <select id="currencyCF">
-                            <option value="USD">USD ($)</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="GBP">GBP (£)</option>
-                            <option value="JPY">JPY (¥)</option>
-                            <option value="CNY">CNY (¥)</option>
-                            <option value="INR">INR (₹)</option>
-                            <option value="AUD">AUD ($)</option>
-                            <option value="CAD">CAD ($)</option>
-                            <option value="CHF">CHF (Fr)</option>
-                            <option value="SEK">SEK (kr)</option>
-                            <option value="NOK">NOK (kr)</option>
-                            <option value="DKK">DKK (kr)</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="logo-upload-section">
-                    <div class="logo-preview" id="logoPreviewCF">
-                        <span>No logo</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="column-headers">
-                <div>Metric</div>
-                <div>Current Year</div>
-                <div>Previous Year</div>
-                <div>Change</div>
-            </div>
-            
-            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Operating Activities</h3>
-            
-            <div class="input-group calculated-row">
-                <label>Net Profit (<span class="currencySymbolCF">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netProfitCF">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netProfitCFPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netProfitCFChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="depreciationCF">Depreciation & Amortization (<span class="currencySymbolCF">$</span>)</label>
-                <input type="number" id="depreciationCF" placeholder="e.g., 10000" step="0.01">
-                <input type="number" id="depreciationCFPrev" placeholder="e.g., 10000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="depreciationCFChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="workingCapitalChanges">Changes in Working Capital (<span class="currencySymbolCF">$</span>)</label>
-                <input type="number" id="workingCapitalChanges" placeholder="e.g., -5000" step="0.01">
-                <input type="number" id="workingCapitalChangesPrev" placeholder="e.g., -5000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="workingCapitalChangesChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="otherOperatingCF">Other Operating Activities (<span class="currencySymbolCF">$</span>)</label>
-                <input type="number" id="otherOperatingCF" placeholder="e.g., 2000" step="0.01">
-                <input type="number" id="otherOperatingCFPrev" placeholder="e.g., 2000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="otherOperatingCFChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>Net Cash from Operating Activities (<span class="currencySymbolCF">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netOperatingCF">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netOperatingCFPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netOperatingCFChange">-</div>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Investing Activities</h3>
-            
-            <div class="input-group">
-                <label for="capexCF">Capital Expenditures (<span class="currencySymbolCF">$</span>)</label>
-                <input type="number" id="capexCF" placeholder="e.g., -15000" step="0.01">
-                <input type="number" id="capexCFPrev" placeholder="e.g., -15000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="capexCFChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="investmentsCF">Investments & Acquisitions (<span class="currencySymbolCF">$</span>)</label>
-                <input type="number" id="investmentsCF" placeholder="e.g., -10000" step="0.01">
-                <input type="number" id="investmentsCFPrev" placeholder="e.g., -10000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="investmentsCFChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="otherInvestingCF">Other Investing Activities (<span class="currencySymbolCF">$</span>)</label>
-                <input type="number" id="otherInvestingCF" placeholder="e.g., 1000" step="0.01">
-                <input type="number" id="otherInvestingCFPrev" placeholder="e.g., 1000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="otherInvestingCFChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>Net Cash from Investing Activities (<span class="currencySymbolCF">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netInvestingCF">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netInvestingCFPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netInvestingCFChange">-</div>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Financing Activities</h3>
-            
-            <div class="input-group">
-                <label for="debtCF">Debt Issued/Repaid (<span class="currencySymbolCF">$</span>)</label>
-                <input type="number" id="debtCF" placeholder="e.g., 20000" step="0.01">
-                <input type="number" id="debtCFPrev" placeholder="e.g., 20000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="debtCFChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="equityCF">Equity Issued/Repurchased (<span class="currencySymbolCF">$</span>)</label>
-                <input type="number" id="equityCF" placeholder="e.g., 10000" step="0.01">
-                <input type="number" id="equityCFPrev" placeholder="e.g., 10000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="equityCFChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="dividendsCF">Dividends Paid (<span class="currencySymbolCF">$</span>)</label>
-                <input type="number" id="dividendsCF" placeholder="e.g., -5000" step="0.01">
-                <input type="number" id="dividendsCFPrev" placeholder="e.g., -5000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="dividendsCFChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="otherFinancingCF">Other Financing Activities (<span class="currencySymbolCF">$</span>)</label>
-                <input type="number" id="otherFinancingCF" placeholder="e.g., 1000" step="0.01">
-                <input type="number" id="otherFinancingCFPrev" placeholder="e.g., 1000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="otherFinancingCFChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>Net Cash from Financing Activities (<span class="currencySymbolCF">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netFinancingCF">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netFinancingCFPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netFinancingCFChange">-</div>
-                </div>
-            </div>
-            
-            <h3 style="margin-top: 20px; margin-bottom: 10px; color: #667eea;">Summary</h3>
-            
-            <div class="input-group calculated-row">
-                <label>Net Change in Cash (<span class="currencySymbolCF">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netChangeCash">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netChangeCashPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netChangeCashChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="beginningCash">Beginning Cash Balance (<span class="currencySymbolCF">$</span>)</label>
-                <input type="number" id="beginningCash" placeholder="e.g., 50000" step="0.01">
-                <input type="number" id="beginningCashPrev" placeholder="e.g., 50000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="beginningCashChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>Ending Cash Balance (<span class="currencySymbolCF">$</span>)</label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="endingCash">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="endingCashPrev">$0</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="endingCashChange">-</div>
-                </div>
-            </div>
-            
-            <button id="exportPdfBtnCF" class="export-btn">Export as PDF</button>
-            <button id="exportExcelBtnCF" class="export-btn excel-btn">Export to Excel</button>
-        </div>
-        
-        <div class="results-section">
-            <h2>Graphs</h2>
-            
-            <div class="graphs-container">
-                <div class="graph-panel">
-                    <div class="graph-controls">
-                        <label for="metricSelectCF1">Select Metric:</label>
-                        <select id="metricSelectCF1">
-                            <option value="netOperatingCF" selected>Net Operating Cash Flow</option>
-                            <option value="netInvestingCF">Net Investing Cash Flow</option>
-                            <option value="netFinancingCF">Net Financing Cash Flow</option>
-                            <option value="netChangeCash">Net Change in Cash</option>
-                            <option value="endingCash">Ending Cash Balance</option>
-                        </select>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <canvas id="comparisonChartCF1"></canvas>
-                    </div>
-                </div>
-                
-                <div class="graph-panel">
-                    <div class="graph-controls">
-                        <label for="metricSelectCF2">Select Metric:</label>
-                        <select id="metricSelectCF2">
-                            <option value="netOperatingCF">Net Operating Cash Flow</option>
-                            <option value="netInvestingCF">Net Investing Cash Flow</option>
-                            <option value="netFinancingCF">Net Financing Cash Flow</option>
-                            <option value="netChangeCash" selected>Net Change in Cash</option>
-                            <option value="endingCash">Ending Cash Balance</option>
-                        </select>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <canvas id="comparisonChartCF2"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    .container {
+        max-width: 100%;
+        margin: 0;
+        padding: 10px;
+    }
     
-    <div class="tab-content" id="profitability-ratios">
-        <div class="input-section">
-            <h2>Profitability Ratios</h2>
-            
-            <div class="company-info-section">
-                <div class="company-details">
-                    <div class="input-group-simple">
-                        <label for="companyNamePR">Company Name</label>
-                        <input type="text" id="companyNamePR" placeholder="Enter company name" readonly>
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="orgNumberPR">Organization Number</label>
-                        <input type="text" id="orgNumberPR" placeholder="Enter organization number" readonly>
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="currencyPR">Currency</label>
-                        <select id="currencyPR">
-                            <option value="USD">USD ($)</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="GBP">GBP (£)</option>
-                            <option value="JPY">JPY (¥)</option>
-                            <option value="CNY">CNY (¥)</option>
-                            <option value="INR">INR (₹)</option>
-                            <option value="AUD">AUD ($)</option>
-                            <option value="CAD">CAD ($)</option>
-                            <option value="CHF">CHF (Fr)</option>
-                            <option value="SEK">SEK (kr)</option>
-                            <option value="NOK">NOK (kr)</option>
-                            <option value="DKK">DKK (kr)</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="logo-upload-section">
-                    <div class="logo-preview" id="logoPreviewPR">
-                        <span>No logo</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="column-headers">
-                <div>Metric</div>
-                <div>Current Year</div>
-                <div>Previous Year</div>
-                <div>Change</div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>
-                    Gross Margin
-                    <span class="info-icon" title="Formula: (Gross Profit / Revenue) × 100">ℹ️</span>
-                </label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="grossMarginPR">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="grossMarginPRPrev">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="grossMarginPRChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>
-                    Operating Margin
-                    <span class="info-icon" title="Formula: (EBIT / Revenue) × 100">ℹ️</span>
-                </label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="operatingMarginPR">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="operatingMarginPRPrev">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="operatingMarginPRChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>
-                    Pretax Margin
-                    <span class="info-icon" title="Formula: ((EBIT - Interests) / Revenue) × 100">ℹ️</span>
-                </label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="pretaxMarginPR">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="pretaxMarginPRPrev">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="pretaxMarginPRChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>
-                    Net Profit Margin
-                    <span class="info-icon" title="Formula: (Net Profit / Revenue) × 100">ℹ️</span>
-                </label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netProfitMarginPR">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netProfitMarginPRPrev">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="netProfitMarginPRChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="cashFlowPR">
-                    Operating Cash Flow (<span class="currencySymbolPR">$</span>)
-                    <span class="info-icon" title="Enter your operating cash flow from cash flow statement">ℹ️</span>
-                </label>
-                <input type="number" id="cashFlowPR" placeholder="e.g., 150000" step="0.01">
-                <input type="number" id="cashFlowPRPrev" placeholder="e.g., 150000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="cashFlowPRChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>
-                    Cash Flow Margin
-                    <span class="info-icon" title="Formula: (Operating Cash Flow / Revenue) × 100">ℹ️</span>
-                </label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="cashFlowMarginPR">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="cashFlowMarginPRPrev">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="cashFlowMarginPRChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>
-                    Return on Assets (ROA)
-                    <span class="info-icon" title="Formula: (Net Profit / Total Assets) × 100">ℹ️</span>
-                </label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="roaPR">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="roaPRPrev">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="roaPRChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>
-                    Return on Equity (ROE)
-                    <span class="info-icon" title="Formula: (Net Profit / Total Equity) × 100">ℹ️</span>
-                </label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="roePR">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="roePRPrev">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="roePRChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="investedCapitalPR">
-                    Invested Capital (<span class="currencySymbolPR">$</span>)
-                    <span class="info-icon" title="Enter total invested capital (equity + long-term debt)">ℹ️</span>
-                </label>
-                <input type="number" id="investedCapitalPR" placeholder="e.g., 1000000" step="0.01">
-                <input type="number" id="investedCapitalPRPrev" placeholder="e.g., 1000000" step="0.01">
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="investedCapitalPRChange">-</div>
-                </div>
-            </div>
-            
-            <div class="input-group calculated-row">
-                <label>
-                    Return on Invested Capital (ROIC)
-                    <span class="info-icon" title="Formula: (Net Profit / Invested Capital) × 100">ℹ️</span>
-                </label>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="roicPR">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="roicPRPrev">0.00%</div>
-                </div>
-                <div class="calculated-group-value">
-                    <div class="calculated-value" id="roicPRChange">-</div>
-                </div>
-            </div>
-            
-            <button id="exportPdfBtnPR" class="export-btn">Export as PDF</button>
-            <button id="exportExcelBtnPR" class="export-btn excel-btn">Export to Excel</button>
-        </div>
-        
-        <div class="results-section">
-            <h2>Graphs</h2>
-            
-            <div class="graphs-container">
-                <div class="graph-panel">
-                    <div class="graph-controls">
-                        <label for="metricSelectPR1">Select Metric:</label>
-                        <select id="metricSelectPR1">
-                            <option value="grossMargin" selected>Gross Margin</option>
-                            <option value="operatingMargin">Operating Margin</option>
-                            <option value="pretaxMargin">Pretax Margin</option>
-                            <option value="netProfitMargin">Net Profit Margin</option>
-                            <option value="cashFlowMargin">Cash Flow Margin</option>
-                            <option value="roa">Return on Assets (ROA)</option>
-                            <option value="roe">Return on Equity (ROE)</option>
-                            <option value="roic">Return on Invested Capital (ROIC)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <canvas id="comparisonChartPR1"></canvas>
-                    </div>
-                </div>
-                
-                <div class="graph-panel">
-                    <div class="graph-controls">
-                        <label for="metricSelectPR2">Select Metric:</label>
-                        <select id="metricSelectPR2">
-                            <option value="grossMargin">Gross Margin</option>
-                            <option value="operatingMargin">Operating Margin</option>
-                            <option value="pretaxMargin">Pretax Margin</option>
-                            <option value="netProfitMargin">Net Profit Margin</option>
-                            <option value="cashFlowMargin">Cash Flow Margin</option>
-                            <option value="roa">Return on Assets (ROA)</option>
-                            <option value="roe" selected>Return on Equity (ROE)</option>
-                            <option value="roic">Return on Invested Capital (ROIC)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="chart-container">
-                        <canvas id="comparisonChartPR2"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    h1 {
+        color: #333;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+        page-break-after: avoid;
+        display: none;
+    }
     
-    <div class="tab-content" id="planning">
-        <div class="input-section">
-            <h2>5-Year Planning</h2>
-            
-            <div class="company-info-section">
-                <div class="company-details">
-                    <div class="input-group-simple">
-                        <label for="companyNamePlan">Company Name</label>
-                        <input type="text" id="companyNamePlan" placeholder="Enter company name" readonly>
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="orgNumberPlan">Organization Number</label>
-                        <input type="text" id="orgNumberPlan" placeholder="Enter organization number" readonly>
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="currencyPlan">Currency</label>
-                        <select id="currencyPlan">
-                            <option value="USD">USD ($)</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="GBP">GBP (£)</option>
-                            <option value="JPY">JPY (¥)</option>
-                            <option value="CNY">CNY (¥)</option>
-                            <option value="INR">INR (₹)</option>
-                            <option value="AUD">AUD ($)</option>
-                            <option value="CAD">CAD ($)</option>
-                            <option value="CHF">CHF (Fr)</option>
-                            <option value="SEK">SEK (kr)</option>
-                            <option value="NOK">NOK (kr)</option>
-                            <option value="DKK">DKK (kr)</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="logo-upload-section">
-                    <div class="logo-preview" id="logoPreviewPlan">
-                        <span>No logo</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="planning-table-container">
-                <table class="planning-table">
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Year 1</th>
-                            <th>Year 2</th>
-                            <th>Year 3</th>
-                            <th>Year 4</th>
-                            <th>Year 5</th>
-                            <th>CAGR %</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="metric-label">Revenues (<span class="currencySymbolPlan">$</span>)</td>
-                            <td><input type="number" class="planning-input year-start" id="revenueY1" data-metric="revenue" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-middle" id="revenueY2" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-middle" id="revenueY3" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-middle" id="revenueY4" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-end" id="revenueY5" data-metric="revenue" placeholder="0" step="0.01"></td>
-                            <td class="cagr-cell-container">
-                                <div class="cagr-display" id="revenueCAGR">0.00%</div>
-                                <span class="info-icon cagr-info" title="CAGR is auto-calculated when you enter Year 1 and Year 5. Formula: CAGR = ((Year 5 / Year 1)^(1/4) - 1) × 100. Years 2-4 are then projected.">ℹ️</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="metric-label">COGS (<span class="currencySymbolPlan">$</span>)</td>
-                            <td><input type="number" class="planning-input year-start" id="cogsY1" data-metric="cogs" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-middle" id="cogsY2" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-middle" id="cogsY3" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-middle" id="cogsY4" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-end" id="cogsY5" data-metric="cogs" placeholder="0" step="0.01"></td>
-                            <td class="cagr-cell-container">
-                                <div class="cagr-display" id="cogsCAGR">0.00%</div>
-                                <span class="info-icon cagr-info" title="CAGR is auto-calculated when you enter Year 1 and Year 5. Formula: CAGR = ((Year 5 / Year 1)^(1/4) - 1) × 100. Years 2-4 are then projected.">ℹ️</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="metric-label">OPEX (<span class="currencySymbolPlan">$</span>)</td>
-                            <td><input type="number" class="planning-input year-start" id="opexY1" data-metric="opex" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-middle" id="opexY2" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-middle" id="opexY3" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-middle" id="opexY4" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-end" id="opexY5" data-metric="opex" placeholder="0" step="0.01"></td>
-                            <td class="cagr-cell-container">
-                                <div class="cagr-display" id="opexCAGR">0.00%</div>
-                                <span class="info-icon cagr-info" title="CAGR is auto-calculated when you enter Year 1 and Year 5. Formula: CAGR = ((Year 5 / Year 1)^(1/4) - 1) × 100. Years 2-4 are then projected.">ℹ️</span>
-                            </td>
-                        </tr>
-                        <tr class="calculated-row">
-                            <td class="metric-label">EBITDA (<span class="currencySymbolPlan">$</span>)</td>
-                            <td class="calculated-cell" id="ebitdaY1">$0</td>
-                            <td class="calculated-cell" id="ebitdaY2">$0</td>
-                            <td class="calculated-cell" id="ebitdaY3">$0</td>
-                            <td class="calculated-cell" id="ebitdaY4">$0</td>
-                            <td class="calculated-cell" id="ebitdaY5">$0</td>
-                            <td class="cagr-cell">-</td>
-                        </tr>
-                        <tr>
-                            <td class="metric-label">CAPEX (<span class="currencySymbolPlan">$</span>)</td>
-                            <td><input type="number" class="planning-input year-start" id="capexY1" data-metric="capex" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-middle" id="capexY2" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-middle" id="capexY3" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-middle" id="capexY4" placeholder="0" step="0.01"></td>
-                            <td><input type="number" class="planning-input year-end" id="capexY5" data-metric="capex" placeholder="0" step="0.01"></td>
-                            <td class="cagr-cell-container">
-                                <div class="cagr-display" id="capexCAGR">0.00%</div>
-                                <span class="info-icon cagr-info" title="CAGR is auto-calculated when you enter Year 1 and Year 5. Formula: CAGR = ((Year 5 / Year 1)^(1/4) - 1) × 100. Years 2-4 are then projected.">ℹ️</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="metric-label">FTEs</td>
-                            <td><input type="number" class="planning-input year-start" id="ftesY1" data-metric="ftes" placeholder="0" step="0.1"></td>
-                            <td><input type="number" class="planning-input year-middle" id="ftesY2" placeholder="0" step="0.1"></td>
-                            <td><input type="number" class="planning-input year-middle" id="ftesY3" placeholder="0" step="0.1"></td>
-                            <td><input type="number" class="planning-input year-middle" id="ftesY4" placeholder="0" step="0.1"></td>
-                            <td><input type="number" class="planning-input year-end" id="ftesY5" data-metric="ftes" placeholder="0" step="0.1"></td>
-                            <td class="cagr-cell-container">
-                                <div class="cagr-display" id="ftesCAGR">0.00%</div>
-                                <span class="info-icon cagr-info" title="CAGR is auto-calculated when you enter Year 1 and Year 5. Formula: CAGR = ((Year 5 / Year 1)^(1/4) - 1) × 100. Years 2-4 are then projected.">ℹ️</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <button id="exportPdfBtnPlan" class="export-btn">Export as PDF</button>
-            <button id="exportExcelBtnPlan" class="export-btn excel-btn">Export to Excel</button>
-        </div>
-        
-        <div class="results-section">
-            <h2>5-Year Financial Overview</h2>
-            
-            <div class="single-chart-container">
-                <div class="chart-container-large">
-                    <canvas id="stackedAreaChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
+    h2 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+        margin-top: 0;
+        page-break-after: avoid;
+    }
     
-    <div class="tab-content" id="forecasting">
-        <div class="input-section">
-            <h2>Monthly Forecasting</h2>
-            
-            <div class="company-info-section">
-                <div class="company-details">
-                    <div class="input-group-simple">
-                        <label for="companyNameForecast">Company Name</label>
-                        <input type="text" id="companyNameForecast" placeholder="Enter company name" readonly>
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="orgNumberForecast">Organization Number</label>
-                        <input type="text" id="orgNumberForecast" placeholder="Enter organization number" readonly>
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="currencyForecast">Currency</label>
-                        <select id="currencyForecast">
-                            <option value="USD">USD ($)</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="GBP">GBP (£)</option>
-                            <option value="JPY">JPY (¥)</option>
-                            <option value="CNY">CNY (¥)</option>
-                            <option value="INR">INR (₹)</option>
-                            <option value="AUD">AUD ($)</option>
-                            <option value="CAD">CAD ($)</option>
-                            <option value="CHF">CHF (Fr)</option>
-                            <option value="SEK">SEK (kr)</option>
-                            <option value="NOK">NOK (kr)</option>
-                            <option value="DKK">DKK (kr)</option>
-                        </select>
-                    </div>
-                    
-                    <div class="input-group-simple">
-                        <label for="metricSelect">Metric</label>
-                        <select id="metricSelect">
-                            <option value="revenue">Revenue</option>
-                            <option value="cogs">COGS</option>
-                            <option value="opex">OPEX</option>
-                            <option value="ebitda">EBITDA</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="logo-upload-section">
-                    <div class="logo-preview" id="logoPreviewForecast">
-                        <span>No logo</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="forecast-controls">
-                <div class="input-group-simple">
-                    <label for="startBalance">Start Balance (<span class="currencySymbolForecast">$</span>)</label>
-                    <input type="number" id="startBalance" placeholder="e.g., 100000" step="0.01">
-                </div>
-                
-                <div class="input-group-simple">
-                    <label for="endBalance">End Balance (<span class="currencySymbolForecast">$</span>)</label>
-                    <input type="number" id="endBalance" placeholder="e.g., 120000" step="0.01">
-                </div>
-            </div>
-            
-            <div class="forecast-table-container">
-                <table class="forecast-table">
-                    <thead>
-                        <tr>
-                            <th>Month</th>
-                            <th>Plan (<span class="currencySymbolForecast">$</span>)</th>
-                            <th>Actuals (<span class="currencySymbolForecast">$</span>)</th>
-                            <th>Variance (<span class="currencySymbolForecast">$</span>)</th>
-                            <th>Variance %</th>
-                        </tr>
-                    </thead>
-                    <tbody id="forecastTableBody">
-                        <!-- Rows will be generated by JavaScript -->
-                    </tbody>
-                    <tfoot>
-                        <tr class="total-row">
-                            <td>Total</td>
-                            <td id="totalPlan">$0</td>
-                            <td id="totalActuals">$0</td>
-                            <td id="totalVariance">$0</td>
-                            <td id="totalVariancePercent">0.00%</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-            
-            <button id="exportPdfBtnForecast" class="export-btn">Export as PDF</button>
-            <button id="exportExcelBtnForecast" class="export-btn excel-btn">Export to Excel</button>
-        </div>
-        
-        <div class="results-section">
-            <h2>Plan vs Actuals</h2>
-            
-            <div class="single-chart-container">
-                <div class="chart-container-large">
-                    <canvas id="forecastComparisonChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
+    #calculateBtn, #calculateBtnBS, .export-btn, #exportPdfBtnBS, .upload-btn {
+        display: none;
+    }
     
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+    .remove-logo-btn {
+        display: none;
+    }
+    
+    .info-icon {
+        display: none;
+    }
+    
+    .helper-toggle {
+        display: none;
+    }
+    
+    .helper-sidebar {
+        display: none;
+    }
+    
+    .tab-navigation {
+        display: none;
+    }
+    
+    .tab-content {
+        display: block !important;
+        page-break-before: auto;
+    }
+    
+    .tab-content:first-of-type {
+        page-break-before: avoid;
+    }
+    
+    .tab-content#income-statement {
+        page-break-before: avoid;
+    }
+    
+    .tab-content#balance-sheet {
+        page-break-before: always;
+    }
+    
+    .tab-content#cash-flow {
+        page-break-before: always;
+    }
+    
+    .tab-content#profitability-ratios {
+        page-break-before: always;
+    }
+    
+    .tab-content#planning {
+        page-break-before: always;
+    }
+    
+    .tab-content#planning .input-section {
+        page-break-after: always;
+    }
+    
+    .tab-content#planning .results-section {
+        page-break-before: always;
+    }
+    
+    .input-section, .results-section {
+        box-shadow: none;
+        page-break-inside: avoid;
+        background: white;
+        padding: 10px;
+        margin-bottom: 10px;
+        margin-top: 0;
+    }
+    
+    .tab-content#planning .input-section {
+        padding: 8px;
+        margin-bottom: 5px;
+    }
+    
+    .tab-content#planning .results-section {
+        padding: 8px;
+        margin-top: 5px;
+    }
+    
+    .input-section {
+        page-break-after: always;
+        padding-top: 0;
+    }
+    
+    .results-section {
+        margin-top: 0;
+        padding-top: 5px;
+    }
+    
+    .company-info-section {
+        border-bottom: 2px solid #333;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        position: relative;
+    }
+    
+    .tab-content#planning .company-info-section {
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+    }
+    
+    .company-details {
+        grid-column: 1;
+    }
+    
+    .logo-upload-section {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+    }
+    
+    .logo-preview {
+        border: none;
+        background: transparent;
+        width: 100px;
+        height: 100px;
+    }
+    
+    .logo-preview span {
+        display: none;
+    }
+    
+    .logo-upload-section {
+        margin-top: 0;
+    }
+    
+    .logo-upload-section label {
+        display: none;
+    }
+    
+    .metrics-section {
+        page-break-before: always;
+        page-break-inside: avoid;
+        box-shadow: none;
+        background: white;
+        padding: 10px;
+        padding-top: 0;
+        margin-bottom: 10px;
+        margin-top: 0;
+    }
+    
+    .metrics-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 10px;
+    }
+    
+    .metric-box {
+        padding: 15px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        border-radius: 12px;
+        text-align: center;
+    }
+    
+    .metric-label {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.9) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .metric-value {
+        font-size: 1.5rem;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .results-section {
+        page-break-before: avoid;
+        page-break-inside: avoid;
+        margin-top: 0;
+        padding-top: 10px;
+        display: block;
+    }
+    
+    input[type="number"], input[type="text"], select {
+        border: 1px solid #333;
+        background: white;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-size: 0.75rem;
+        padding: 3px 5px;
+    }
+    
+    .calculated-group-value {
+        background: #f0f4f8;
+        border: 1px solid #333;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 3px 5px;
+    }
+    
+    .calculated-value {
+        font-size: 0.75rem;
+    }
+    
+    .column-headers {
+        border-bottom: 2px solid #333;
+        font-size: 0.8rem;
+        display: grid !important;
+        grid-template-columns: 2fr 1.5fr 1.5fr 1fr !important;
+        gap: 8px;
+    }
+    
+    .input-group, .input-group.calculated-row {
+        margin-bottom: 6px;
+        gap: 8px;
+        display: grid !important;
+        grid-template-columns: 2fr 1.5fr 1.5fr 1fr !important;
+    }
+    
+    .input-group-simple {
+        display: grid !important;
+        grid-template-columns: 150px 250px !important;
+    }
+    
+    label {
+        font-size: 0.8rem;
+    }
+    
+    .metric-card {
+        background: #f5f7fa;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 6px;
+    }
+    
+    .metric-card h3 {
+        font-size: 0.75rem;
+    }
+    
+    .metric-value {
+        font-size: 1rem;
+    }
+    
+    .graphs-container {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 15px;
+    }
+    
+    .graph-panel {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .graph-controls {
+        margin-bottom: 10px;
+    }
+    
+    .graph-controls label {
+        font-size: 0.8rem;
+    }
+    
+    .graph-controls select {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+    
+    .calculated-value.positive {
+        color: #38a169 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .calculated-value.negative {
+        color: #e53e3e !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .planning-table-container {
+        overflow-x: visible;
+        page-break-inside: avoid;
+    }
+    
+    .planning-table {
+        width: 100%;
+        font-size: 0.65rem;
+        table-layout: fixed;
+    }
+    
+    .planning-table thead th {
+        background: white !important;
+        color: #000 !important;
+        padding: 6px 4px;
+        border-bottom: 2px solid #333 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-size: 0.7rem;
+        font-weight: 700;
+    }
+    
+    .planning-table thead th:first-child {
+        width: 20%;
+        min-width: 120px;
+    }
+    
+    .planning-table thead th:nth-child(2),
+    .planning-table thead th:nth-child(3),
+    .planning-table thead th:nth-child(4),
+    .planning-table thead th:nth-child(5),
+    .planning-table thead th:nth-child(6) {
+        width: 12%;
+    }
+    
+    .planning-table thead th:last-child {
+        width: 12%;
+    }
+    
+    .planning-table td {
+        padding: 6px 4px;
+    }
+    
+    .planning-input {
+        border: 1px solid #333;
+        padding: 3px;
+        font-size: 0.65rem;
+        width: 100%;
+    }
+    
+    .cagr-display {
+        border: 1px solid #f59e0b;
+        padding: 3px;
+        font-size: 0.65rem;
+        background: #fff9e6 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        width: 100%;
+    }
+    
+    .cagr-cell {
+        font-size: 0.65rem;
+    }
+    
+    .planning-table td.metric-label {
+        font-size: 0.7rem;
+        padding-left: 8px;
+        font-weight: 600;
+        text-align: left;
+        white-space: nowrap;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .currencySymbolPlan {
+        color: #000 !important;
+    }
+    
+    .calculated-cell {
+        font-size: 0.65rem;
+        color: #667eea !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .planning-table tbody tr.calculated-row {
+        background: #f0f4f8 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .chart-container-large {
+        height: 300px;
+        page-break-inside: avoid;
+    }
+    .forecast-controls {
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+    
+    .tab-content#forecasting {
+        page-break-before: always;
+    }
+    
+    .tab-content#forecasting .input-section {
+        page-break-after: always;
+    }
+    
+    .tab-content#forecasting .results-section {
+        page-break-before: always;
+    }
+    
+    .forecast-table {
+        font-size: 0.7rem;
+    }
+    
+    .forecast-table thead th {
+        background: white !important;
+        color: #000 !important;
+        padding: 6px;
+        border-bottom: 2px solid #333 !important;
+        font-size: 0.75rem;
+    }
+    
+    .forecast-table td {
+        padding: 6px;
+        font-size: 0.7rem;
+    }
+    
+    .forecast-table .plan-cell {
+        background: #f0f4f8 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .forecast-table input.actuals-input {
+        border: 1px solid #333;
+        padding: 4px;
+        font-size: 0.7rem;
+    }
+    
+    .forecast-table tfoot .total-row {
+        background: #667eea !important;
+        color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .helper-toggle {
+        top: 10px;
+        right: 10px;
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+    
+    .helper-sidebar {
+        width: 100%;
+        right: -100%;
+    }
+    
+    .helper-sidebar.active {
+        right: 0;
+    }
+    
+    .input-section, .results-section {
+        padding: 20px;
+    }
+    
+    .company-info-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .input-group, .calculated-group, .calculated-group-value, .column-headers {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+    
+    .column-headers {
+        display: none;
+    }
+    
+    .calculated-value {
+        text-align: left;
+    }
+    
+    .input-group label {
+        margin-bottom: 4px;
+    }
+    
+    .graphs-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+}
