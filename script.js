@@ -618,10 +618,42 @@ document.addEventListener('DOMContentLoaded', function() {
                     section.style.display = 'flex';
                 });
                 
+                // Show remove button
+                document.getElementById('removeLogo').style.display = 'block';
+                
                 // Save to localStorage
                 localStorage.setItem('companyLogo', logoUrl);
             };
             reader.readAsDataURL(file);
+        }
+    });
+    
+    // Handle logo removal
+    document.getElementById('removeLogo').addEventListener('click', function() {
+        if (confirm('Are you sure you want to remove the logo?')) {
+            // Clear all logo previews
+            document.getElementById('logoPreview').innerHTML = '<span>No logo</span>';
+            document.getElementById('logoPreviewBS').innerHTML = '<span>No logo</span>';
+            document.getElementById('logoPreviewCF').innerHTML = '<span>No logo</span>';
+            document.getElementById('logoPreviewPR').innerHTML = '<span>No logo</span>';
+            document.getElementById('logoPreviewPlan').innerHTML = '<span>No logo</span>';
+            document.getElementById('logoPreviewForecast').innerHTML = '<span>No logo</span>';
+            
+            // Hide logo sections on other tabs
+            document.getElementById('logoPreviewBS').parentElement.style.display = 'none';
+            document.getElementById('logoPreviewCF').parentElement.style.display = 'none';
+            document.getElementById('logoPreviewPR').parentElement.style.display = 'none';
+            document.getElementById('logoPreviewPlan').parentElement.style.display = 'none';
+            document.getElementById('logoPreviewForecast').parentElement.style.display = 'none';
+            
+            // Hide remove button
+            document.getElementById('removeLogo').style.display = 'none';
+            
+            // Clear file input
+            document.getElementById('logoUpload').value = '';
+            
+            // Remove from localStorage
+            localStorage.removeItem('companyLogo');
         }
     });
     
@@ -639,6 +671,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.logo-upload-section').forEach(section => {
             section.style.display = 'flex';
         });
+        
+        // Show remove button
+        document.getElementById('removeLogo').style.display = 'block';
     } else {
         // Hide logo sections on tabs other than Income Statement if no logo
         document.getElementById('logoPreviewBS').parentElement.style.display = 'none';
